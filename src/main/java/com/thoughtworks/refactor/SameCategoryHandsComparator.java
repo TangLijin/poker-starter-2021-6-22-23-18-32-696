@@ -17,9 +17,7 @@ public class SameCategoryHandsComparator {
 
     public static String compareSameCategoryHands(Hands blackHandsObj, Hands whiteHandsObj) {
         String winResult;
-        if (blackHandsObj.getCategory().getRanking() == 1) {
-            winResult = SameCategoryHandsComparator.compareFourOfAKind(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 2) {
+         if (blackHandsObj.getCategory().getRanking() == 2) {
             winResult = SameCategoryHandsComparator.compareFullHouse(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 3) { //同花
             winResult = SameCategoryHandsComparator.compareFlush(blackHandsObj, whiteHandsObj);
@@ -83,18 +81,6 @@ public class SameCategoryHandsComparator {
 
     public static String compareFullHouse(Hands blackHandsObj, Hands whiteHandsObj) {
         String winResult;//葫芦
-        if (blackHandsObj.getDistinctDescendingHandsNumbers()[0] < whiteHandsObj.getDistinctDescendingHandsNumbers()[0]) {
-            String sig = intNumber(whiteHandsObj.getDistinctDescendingHandsNumbers()[0]);
-            winResult = "white wins - high card:" + sig;
-        } else {
-            String sig = intNumber(blackHandsObj.getDistinctDescendingHandsNumbers()[0]);
-            winResult = "black wins - high card:" + sig;
-        }
-        return winResult;
-    }
-
-    public static String compareFourOfAKind(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult;//铁支
         if (blackHandsObj.getDistinctDescendingHandsNumbers()[0] < whiteHandsObj.getDistinctDescendingHandsNumbers()[0]) {
             String sig = intNumber(whiteHandsObj.getDistinctDescendingHandsNumbers()[0]);
             winResult = "white wins - high card:" + sig;
