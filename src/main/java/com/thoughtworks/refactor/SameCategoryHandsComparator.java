@@ -162,4 +162,28 @@ public class SameCategoryHandsComparator {
         }
         return winResult;
     }
+
+    public static String compareSameCategoryHands(Hands blackHandsObj, Hands whiteHandsObj) {
+        String winResult;
+        if (blackHandsObj.getCategory().getRanking() == 0) {
+            winResult = SameCategoryHandsComparator.compareStraightFlush(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 1) {
+            winResult = SameCategoryHandsComparator.compareFourOfAKind(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 2) {
+            winResult = SameCategoryHandsComparator.compareFullHouse(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 3) { //同花
+            winResult = SameCategoryHandsComparator.compareFlush(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 4) { //顺子
+            winResult = SameCategoryHandsComparator.compareStraight(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 5) { //三条
+            winResult = SameCategoryHandsComparator.compareThreeOfAKind(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 6) { //两对
+            winResult = SameCategoryHandsComparator.compareTwoPair(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 7) { //对子
+            winResult = SameCategoryHandsComparator.compareOnePair(blackHandsObj, whiteHandsObj);
+        } else {
+            winResult = SameCategoryHandsComparator.compareHighCard(blackHandsObj, whiteHandsObj);
+        }
+        return winResult;
+    }
 }
