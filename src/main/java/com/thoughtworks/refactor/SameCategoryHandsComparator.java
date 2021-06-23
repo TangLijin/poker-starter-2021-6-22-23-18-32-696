@@ -17,11 +17,7 @@ public class SameCategoryHandsComparator {
 
     public static String compareSameCategoryHands(Hands blackHandsObj, Hands whiteHandsObj) {
         String winResult;
-         if (blackHandsObj.getCategory().getRanking() == 2) {
-            winResult = SameCategoryHandsComparator.compareFullHouse(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 3) { //同花
-            winResult = SameCategoryHandsComparator.compareFlush(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 4) { //顺子
+          if (blackHandsObj.getCategory().getRanking() == 4) { //顺子
             winResult = SameCategoryHandsComparator.compareStraight(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 5) { //三条
             winResult = SameCategoryHandsComparator.compareThreeOfAKind(blackHandsObj, whiteHandsObj);
@@ -57,36 +53,6 @@ public class SameCategoryHandsComparator {
             winResult = "black wins - high card:" + sig;
         } else {
             winResult = "tie";
-        }
-        return winResult;
-    }
-
-    public static String compareFlush(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult = null;
-        for (int i = 0; i < 5; i++) {
-            if (blackHandsObj.getDescendingHandsNumbers()[i] < whiteHandsObj.getDescendingHandsNumbers()[i]) {
-                String sig = intNumber(whiteHandsObj.getDescendingHandsNumbers()[i]);
-                winResult = "white wins - high card:" + sig;
-                break;
-            } else if (blackHandsObj.getDescendingHandsNumbers()[i] > whiteHandsObj.getDescendingHandsNumbers()[i]) {
-                String sig = intNumber(blackHandsObj.getDescendingHandsNumbers()[i]);
-                winResult = "black wins - high card:" + sig;
-                break;
-            } else {
-                winResult = "tie";
-            }
-        }
-        return winResult;
-    }
-
-    public static String compareFullHouse(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult;//葫芦
-        if (blackHandsObj.getDistinctDescendingHandsNumbers()[0] < whiteHandsObj.getDistinctDescendingHandsNumbers()[0]) {
-            String sig = intNumber(whiteHandsObj.getDistinctDescendingHandsNumbers()[0]);
-            winResult = "white wins - high card:" + sig;
-        } else {
-            String sig = intNumber(blackHandsObj.getDistinctDescendingHandsNumbers()[0]);
-            winResult = "black wins - high card:" + sig;
         }
         return winResult;
     }
