@@ -12,7 +12,7 @@ public class Poker {
         int[] blackDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(blackHandsObj);
         Category blackCateGory = blackHandsObj.getCategory();
         int blackHandsCategoryRanking = judgeHandsCategoryRanking(blackCateGory);
-        int[] blackDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(blackDescendingHandsNumbers);
+        int[] blackDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(blackHandsObj);
         int[] blackRepeatNumbers = getDescendingRepeatNumbers(blackDescendingHandsNumbers);
         int[] blackNoRepeatNumbers = getDescendingNoRepeatNumbers(blackDescendingHandsNumbers);
 
@@ -20,7 +20,7 @@ public class Poker {
         int[] whiteDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(whiteHandsObj);
         Category whiteCategory = whiteHandsObj.getCategory();
         int whiteHandsCategoryRanking = judgeHandsCategoryRanking(whiteCategory);
-        int[] whiteDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(whiteDescendingHandsNumbers);
+        int[] whiteDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(whiteHandsObj);
         int[] whiteRepeatNumbers = getDescendingRepeatNumbers(whiteDescendingHandsNumbers);
         int[] whiteNoRepeatNumbers = getDescendingNoRepeatNumbers(whiteDescendingHandsNumbers);
 
@@ -151,6 +151,10 @@ public class Poker {
         return winResult;
     }
 
+    private static int[] getDistinctDescendingHandsNumbers(Hands blackHandsObj) {
+        return getDistinctDescendingHandsNumbers(PokerUtil.getDescendingHandsNumbers(blackHandsObj));
+    }
+
     private int[] getDescendingNoRepeatNumbers(int[] blackDescendingHandsNumbers) {
         return noOrRepeatNumber(blackDescendingHandsNumbers, 1);
     }
@@ -164,7 +168,7 @@ public class Poker {
         return strNumber[i - 2];
     }
 
-    private int[] getDistinctDescendingHandsNumbers(int[] number) {
+    private static int[] getDistinctDescendingHandsNumbers(int[] number) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < number.length; i++) {
             if (map.get(number[i]) != null) {
