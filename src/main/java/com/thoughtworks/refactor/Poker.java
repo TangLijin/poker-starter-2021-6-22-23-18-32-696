@@ -22,23 +22,23 @@ public class Poker {
     private String compareSameCategoryHands(Hands blackHandsObj, Hands whiteHandsObj) {
         String winResult;
         if (blackHandsObj.getCategory().getRanking() == 0) {
-            winResult = compareStraightFlush(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareStraightFlush(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 1) {
-            winResult = compareFourOfAKind(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareFourOfAKind(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 2) {
-            winResult = compareFullHouse(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareFullHouse(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 3) { //同花
-            winResult = compareFlush(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareFlush(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 4) { //顺子
-            winResult = compareStraight(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareStraight(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 5) { //三条
-            winResult = compareThreeOfAKind(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareThreeOfAKind(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 6) { //两对
-            winResult = compareTwoPair(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareTwoPair(blackHandsObj, whiteHandsObj);
         } else if (blackHandsObj.getCategory().getRanking() == 7) { //对子
-            winResult = compareOnePair(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareOnePair(blackHandsObj, whiteHandsObj);
         } else {
-            winResult = compareHighCard(blackHandsObj, whiteHandsObj);
+            winResult = SameCategoryHandsComparator.compareHighCard(blackHandsObj, whiteHandsObj);
         }
         return winResult;
     }
