@@ -2,133 +2,126 @@ package com.thoughtworks.refactor;
 
 import java.util.*;
 
-import static com.thoughtworks.refactor.PokerUtils.*;
-
 public class Poker {
 
-    public static final String[] CARD_TYPES = new String[]{"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
-    public static final String WHITE_WINS_HIGH_CARD = "white wins - high card:";
-    public static final String BLACK_WINS_HIGH_CARD = "black wins - high card:";
-    public static final String BLACK_WINS = "black wins - ";
-    public static final String WHITE_WINS = "white wins - ";
+    public static final String[] HANDS_CATEGORY = {"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
 
     public String compareResult(String blackHands, String whiteHands) {
         String winResult = "";
-        String blackCategoty = judgeCategory(blackHands);
-        String whiteCategoty = judgeCategory(whiteHands);
-        int[] blackNumber = sortNumberDesc(blackHands);
-        int[] whiteNumber = sortNumberDesc(whiteHands);
-        int blackRanking = judgeRanking(blackCategoty);
-        int whiteRanking = judgeRanking(whiteCategoty);
-        int[] blackArraySort = arraySort(blackNumber);
-        int[] whiteArraySort = arraySort(whiteNumber);
-        int[] blackRepeat = noOrRepeatNumber(blackNumber, 0);
-        int[] whiteRepeat = noOrRepeatNumber(whiteNumber, 0);
-        int[] blackNoRepeat = noOrRepeatNumber(blackNumber, 1);
-        int[] whiteNoRepeat = noOrRepeatNumber(whiteNumber, 1);
-        if (blackRanking < whiteRanking) {
-            winResult = BLACK_WINS + CARD_TYPES[blackRanking];
-        } else if (blackRanking > whiteRanking) {
-            winResult = WHITE_WINS + CARD_TYPES[whiteRanking];
+        String blackHandsCategory = PokerUtil.judgeHandCategory(blackHands);
+        String whiteHandsCategory = PokerUtil.judgeHandCategory(whiteHands);
+        int[] blackDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(blackHands);
+        int[] whiteDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(whiteHands);
+        int blackHandsCategoryRanking = judgeHandsCategoryRanking(blackHandsCategory);
+        int whiteHandsCategoryRanking = judgeHandsCategoryRanking(whiteHandsCategory);
+        int[] blackDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(blackDescendingHandsNumbers);
+        int[] whiteDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(whiteDescendingHandsNumbers);
+        int[] blackRepeatNumbers = getDescendingRepeatNumbers(blackDescendingHandsNumbers);
+        int[] whiteRepeatNumbers = getDescendingRepeatNumbers(whiteDescendingHandsNumbers);
+        int[] blackNoRepeatNumbers = getDescendingNoRepeatNumbers(blackDescendingHandsNumbers);
+        int[] whiteNoRepeatNumbers = getDescendingNoRepeatNumbers(whiteDescendingHandsNumbers);
+        if (blackHandsCategoryRanking < whiteHandsCategoryRanking) {
+            winResult = "black wins - " + HANDS_CATEGORY[blackHandsCategoryRanking];
+        } else if (blackHandsCategoryRanking > whiteHandsCategoryRanking) {
+            winResult = "white wins - " + HANDS_CATEGORY[whiteHandsCategoryRanking];
         } else {
-            if (blackRanking == 0) { //同花顺
-                if (blackNumber[0] < whiteNumber[0]) {
-                    String sig = intNumber(whiteNumber[0]);
-                    winResult = WHITE_WINS_HIGH_CARD + sig;
-                } else if (blackNumber[0] > whiteNumber[0]) {
-                    String sig = intNumber(blackNumber[0]);
-                    winResult = BLACK_WINS_HIGH_CARD + sig;
+            if (blackHandsCategoryRanking == 0) { //同花顺
+                if (blackDescendingHandsNumbers[0] < whiteDescendingHandsNumbers[0]) {
+                    String sig = intNumber(whiteDescendingHandsNumbers[0]);
+                    winResult = "white wins - high card:" + sig;
+                } else if (blackDescendingHandsNumbers[0] > whiteDescendingHandsNumbers[0]) {
+                    String sig = intNumber(blackDescendingHandsNumbers[0]);
+                    winResult = "black wins - high card:" + sig;
                 } else {
                     winResult = "tie";
                 }
-            } else if (blackRanking == 1) { //铁支
-                if (blackArraySort[0] < whiteArraySort[0]) {
-                    String sig = intNumber(whiteArraySort[0]);
-                    winResult = WHITE_WINS_HIGH_CARD + sig;
+            } else if (blackHandsCategoryRanking == 1) { //铁支
+                if (blackDistinctDescendingHandsNumbers[0] < whiteDistinctDescendingHandsNumbers[0]) {
+                    String sig = intNumber(whiteDistinctDescendingHandsNumbers[0]);
+                    winResult = "white wins - high card:" + sig;
                 } else {
-                    String sig = intNumber(blackArraySort[0]);
-                    winResult = BLACK_WINS_HIGH_CARD + sig;
+                    String sig = intNumber(blackDistinctDescendingHandsNumbers[0]);
+                    winResult = "black wins - high card:" + sig;
                 }
-            } else if (blackRanking == 2) { //葫芦
-
-                if (blackArraySort[0] < whiteArraySort[0]) {
-                    String sig = intNumber(whiteArraySort[0]);
-                    winResult = WHITE_WINS_HIGH_CARD + sig;
+            } else if (blackHandsCategoryRanking == 2) { //葫芦
+                if (blackDistinctDescendingHandsNumbers[0] < whiteDistinctDescendingHandsNumbers[0]) {
+                    String sig = intNumber(whiteDistinctDescendingHandsNumbers[0]);
+                    winResult = "white wins - high card:" + sig;
                 } else {
-                    String sig = intNumber(blackArraySort[0]);
-                    winResult = BLACK_WINS_HIGH_CARD + sig;
+                    String sig = intNumber(blackDistinctDescendingHandsNumbers[0]);
+                    winResult = "black wins - high card:" + sig;
                 }
-            } else if (blackRanking == 3) { //同花
+            } else if (blackHandsCategoryRanking == 3) { //同花
                 for (int i = 0; i < 5; i++) {
-                    if (blackNumber[i] < whiteNumber[i]) {
-                        String sig = intNumber(whiteNumber[i]);
-                        winResult = WHITE_WINS_HIGH_CARD + sig;
+                    if (blackDescendingHandsNumbers[i] < whiteDescendingHandsNumbers[i]) {
+                        String sig = intNumber(whiteDescendingHandsNumbers[i]);
+                        winResult = "white wins - high card:" + sig;
                         break;
-                    } else if (blackNumber[i] > whiteNumber[i]) {
-                        String sig = intNumber(blackNumber[i]);
-                        winResult = BLACK_WINS_HIGH_CARD + sig;
+                    } else if (blackDescendingHandsNumbers[i] > whiteDescendingHandsNumbers[i]) {
+                        String sig = intNumber(blackDescendingHandsNumbers[i]);
+                        winResult = "black wins - high card:" + sig;
                         break;
                     } else {
                         winResult = "tie";
                     }
                 }
-            } else if (blackRanking == 4) { //顺子
-                if (blackNumber[0] < whiteNumber[0]) {
-                    String sig = intNumber(whiteNumber[0]);
-                    winResult = WHITE_WINS_HIGH_CARD + sig;
-                } else if (blackNumber[0] > whiteNumber[0]) {
-                    String sig = intNumber(blackNumber[0]);
-                    winResult = BLACK_WINS_HIGH_CARD + sig;
+            } else if (blackHandsCategoryRanking == 4) { //顺子
+                if (blackDescendingHandsNumbers[0] < whiteDescendingHandsNumbers[0]) {
+                    String sig = intNumber(whiteDescendingHandsNumbers[0]);
+                    winResult = "white wins - high card:" + sig;
+                } else if (blackDescendingHandsNumbers[0] > whiteDescendingHandsNumbers[0]) {
+                    String sig = intNumber(blackDescendingHandsNumbers[0]);
+                    winResult = "black wins - high card:" + sig;
                 } else {
                     winResult = "tie";
                 }
-            } else if (blackRanking == 5) { //三条
-                if (blackRepeat[0] < whiteRepeat[0]) {
-                    String sig = intNumber(whiteRepeat[0]);
-                    winResult = WHITE_WINS_HIGH_CARD + sig;
+            } else if (blackHandsCategoryRanking == 5) { //三条
+                if (blackRepeatNumbers[0] < whiteRepeatNumbers[0]) {
+                    String sig = intNumber(whiteRepeatNumbers[0]);
+                    winResult = "white wins - high card:" + sig;
                 } else {
-                    String sig = intNumber(blackRepeat[0]);
-                    winResult = BLACK_WINS_HIGH_CARD + sig;
+                    String sig = intNumber(blackRepeatNumbers[0]);
+                    winResult = "black wins - high card:" + sig;
                 }
-            } else if (blackRanking == 6) { //两对
+            } else if (blackHandsCategoryRanking == 6) { //两对
                 for (int i = 0; i < 2; i++) {
-                    if (blackRepeat[i] < whiteRepeat[i]) {
-                        String sig = intNumber(whiteRepeat[i]);
-                        winResult = WHITE_WINS_HIGH_CARD + sig;
+                    if (blackRepeatNumbers[i] < whiteRepeatNumbers[i]) {
+                        String sig = intNumber(whiteRepeatNumbers[i]);
+                        winResult = "white wins - high card:" + sig;
                         break;
-                    } else if (blackRepeat[i] > whiteRepeat[i]) {
-                        String sig = intNumber(blackRepeat[i]);
-                        winResult = BLACK_WINS_HIGH_CARD + sig;
+                    } else if (blackRepeatNumbers[i] > whiteRepeatNumbers[i]) {
+                        String sig = intNumber(blackRepeatNumbers[i]);
+                        winResult = "black wins - high card:" + sig;
                         break;
                     }
                 }
                 if (winResult == "") {
-                    if (blackNoRepeat[0] < whiteNoRepeat[0]) {
-                        String sig = intNumber(whiteNoRepeat[0]);
-                        winResult = WHITE_WINS_HIGH_CARD + sig;
-                    } else if (blackNoRepeat[0] > whiteNoRepeat[0]) {
-                        String sig = intNumber(blackNoRepeat[0]);
-                        winResult = BLACK_WINS_HIGH_CARD + sig;
+                    if (blackNoRepeatNumbers[0] < whiteNoRepeatNumbers[0]) {
+                        String sig = intNumber(whiteNoRepeatNumbers[0]);
+                        winResult = "white wins - high card:" + sig;
+                    } else if (blackNoRepeatNumbers[0] > whiteNoRepeatNumbers[0]) {
+                        String sig = intNumber(blackNoRepeatNumbers[0]);
+                        winResult = "black wins - high card:" + sig;
                     } else {
                         winResult = "tie";
                     }
                 }
-            } else if (blackRanking == 7) { //对子
-                if (blackRepeat[0] < whiteRepeat[0]) {
-                    String sig = intNumber(whiteRepeat[0]);
-                    winResult = WHITE_WINS_HIGH_CARD + sig;
-                } else if (blackRepeat[0] > whiteRepeat[0]) {
-                    String sig = intNumber(blackRepeat[0]);
-                    winResult = BLACK_WINS_HIGH_CARD + sig;
+            } else if (blackHandsCategoryRanking == 7) { //对子
+                if (blackRepeatNumbers[0] < whiteRepeatNumbers[0]) {
+                    String sig = intNumber(whiteRepeatNumbers[0]);
+                    winResult = "white wins - high card:" + sig;
+                } else if (blackRepeatNumbers[0] > whiteRepeatNumbers[0]) {
+                    String sig = intNumber(blackRepeatNumbers[0]);
+                    winResult = "black wins - high card:" + sig;
                 } else {
                     for (int i = 0; i < 3; i++) {
-                        if (blackNoRepeat[i] < whiteNoRepeat[i]) {
-                            String sig = intNumber(whiteNoRepeat[i]);
-                            winResult = WHITE_WINS_HIGH_CARD + sig;
+                        if (blackNoRepeatNumbers[i] < whiteNoRepeatNumbers[i]) {
+                            String sig = intNumber(whiteNoRepeatNumbers[i]);
+                            winResult = "white wins - high card:" + sig;
                             break;
-                        } else if (blackNoRepeat[i] > whiteNoRepeat[i]) {
-                            String sig = intNumber(blackNoRepeat[i]);
-                            winResult = BLACK_WINS_HIGH_CARD + sig;
+                        } else if (blackNoRepeatNumbers[i] > whiteNoRepeatNumbers[i]) {
+                            String sig = intNumber(blackNoRepeatNumbers[i]);
+                            winResult = "black wins - high card:" + sig;
                             break;
                         } else {
                             winResult = "tie";
@@ -137,13 +130,13 @@ public class Poker {
                 }
             } else { //散牌
                 for (int i = 0; i < 5; i++) {
-                    if (blackNumber[i] < whiteNumber[i]) {
-                        String sig = intNumber(whiteNumber[i]);
-                        winResult = WHITE_WINS_HIGH_CARD + sig;
+                    if (blackDescendingHandsNumbers[i] < whiteDescendingHandsNumbers[i]) {
+                        String sig = intNumber(whiteDescendingHandsNumbers[i]);
+                        winResult = "white wins - high card:" + sig;
                         break;
-                    } else if (blackNumber[i] > whiteNumber[i]) {
-                        String sig = intNumber(blackNumber[i]);
-                        winResult = BLACK_WINS_HIGH_CARD + sig;
+                    } else if (blackDescendingHandsNumbers[i] > whiteDescendingHandsNumbers[i]) {
+                        String sig = intNumber(blackDescendingHandsNumbers[i]);
+                        winResult = "black wins - high card:" + sig;
                         break;
                     } else {
                         winResult = "tie";
@@ -154,12 +147,20 @@ public class Poker {
         return winResult;
     }
 
+    private int[] getDescendingNoRepeatNumbers(int[] blackDescendingHandsNumbers) {
+        return noOrRepeatNumber(blackDescendingHandsNumbers, 1);
+    }
+
+    private int[] getDescendingRepeatNumbers(int[] blackDescendingHandsNumbers) {
+        return noOrRepeatNumber(blackDescendingHandsNumbers, 0);
+    }
+
     private String intNumber(int i) {
         String[] strNumber = {"2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"};
         return strNumber[i - 2];
     }
 
-    private int[] arraySort(int[] number) {
+    private int[] getDistinctDescendingHandsNumbers(int[] number) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < number.length; i++) {
             if (map.get(number[i]) != null) {
@@ -244,7 +245,7 @@ public class Poker {
         return reResult;
     }
 
-    private int judgeRanking(String strType) {
+    private int judgeHandsCategoryRanking(String strType) {
         int index = -1;
         String[] type = {"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
         for (int i = 0; i < 9; i++) {
@@ -253,37 +254,6 @@ public class Poker {
             }
         }
         return index;
-    }
-
-    //判断是什么牌
-    private String judgeCategory(String hands) {
-        String type = "";
-        if (getDistinctNumbers(sortNumberDesc(hands)).size() == 5) {
-            if ((sortNumberDesc(hands)[0] - sortNumberDesc(hands)[4] == 4) && (getSuits(hands).size() == 1) && (getDistinctNumbers(sortNumberDesc(hands)).size() == 5)) { //五个相邻的数字且花色一样——同花顺
-                type = "StraightFlush";
-            } else if (sortNumberDesc(hands)[0] - sortNumberDesc(hands)[4] == 4 && (getDistinctNumbers(sortNumberDesc(hands)).size() == 5)) { //五个相邻数字——顺子
-                type = "Straight";
-            } else if (getSuits(hands).size() == 1) { //同一花色——同花
-                type = "Flush";
-            } else { //五个不相邻的数字——散牌
-                type = "HighCard";
-            }
-        } else if (getDistinctNumbers(sortNumberDesc(hands)).size() == 4) { //一对相同，其余三个数字不同——对子
-            type = "OnePair";
-        } else if (getDistinctNumbers(sortNumberDesc(hands)).size() == 3) {
-            if ((sortNumberDesc(hands)[0] == sortNumberDesc(hands)[1] && sortNumberDesc(hands)[2] == sortNumberDesc(hands)[3]) || (sortNumberDesc(hands)[1] == sortNumberDesc(hands)[2] && sortNumberDesc(hands)[3] == sortNumberDesc(hands)[4]) || (sortNumberDesc(hands)[0] == sortNumberDesc(hands)[1] && sortNumberDesc(hands)[3] == sortNumberDesc(hands)[4])) { //两对
-                type = "TwoPair";
-            } else { //三个数字相同，另外两个数字不同——三条
-                type = "ThreeOfAKind";
-            }
-        } else {
-            if (sortNumberDesc(hands)[0] != sortNumberDesc(hands)[1] || sortNumberDesc(hands)[3] != sortNumberDesc(hands)[4]) { //三个数字相同，另外两个数字相同——葫芦
-                type = "FourOfAKind";
-            } else { //四个数字相同——铁支
-                type = "FullHouse";
-            }
-        }
-        return type;
     }
 
 }
