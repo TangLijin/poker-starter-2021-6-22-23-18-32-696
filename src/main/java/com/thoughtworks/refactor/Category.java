@@ -1,24 +1,24 @@
 package com.thoughtworks.refactor;
 
 public class Category {
-  private final String hands;
+    private final String category;
 
-  public Category(String strType) {
-    this.hands = strType;
-  }
+    public Category(String strType) {
+        category = strType;
+    }
 
-  public String getHands() {
-    return hands;
-  }
+    public String getCategory() {
+        return category;
+    }
 
-  int judgeHandsCategoryRanking() {
-      int index = -1;
-      String[] type = {"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
-      for (int i = 0; i < 9; i++) {
-          if (type[i].equals(getHands())) {
-              index = i;
-          }
-      }
-      return index;
-  }
+    int getRanking() {
+        int index = -1;
+        String[] type = {"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
+        for (int i = 0; i < 9; i++) {
+            if (type[i].equals(getCategory())) {
+                index = i;
+            }
+        }
+        return index;
+    }
 }

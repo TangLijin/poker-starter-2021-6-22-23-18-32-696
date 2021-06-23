@@ -6,42 +6,47 @@ public class Poker {
 
     public String compareResult(String blackHands, String whiteHands) {
         String winResult = "";
-        Hands blackHandsObj = new Hands(blackHands);
-        Hands whiteHandsObj = new Hands(whiteHands);
-        if (blackHandsObj.getCategory().judgeHandsCategoryRanking() < whiteHandsObj.getCategory().judgeHandsCategoryRanking()) {
-            winResult = "black wins - " + HANDS_CATEGORY[blackHandsObj.getCategory().judgeHandsCategoryRanking()];
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() > whiteHandsObj.getCategory().judgeHandsCategoryRanking()) {
-            winResult = "white wins - " + HANDS_CATEGORY[whiteHandsObj.getCategory().judgeHandsCategoryRanking()];
+        final Hands blackHandsObj = new Hands(blackHands);
+        final Hands whiteHandsObj = new Hands(whiteHands);
+
+        if (blackHandsObj.getCategory().getRanking() < whiteHandsObj.getCategory().getRanking()) {
+            winResult = "black wins - " + HANDS_CATEGORY[blackHandsObj.getCategory().getRanking()];
+        } else if (blackHandsObj.getCategory().getRanking() > whiteHandsObj.getCategory().getRanking()) {
+            winResult = "white wins - " + HANDS_CATEGORY[whiteHandsObj.getCategory().getRanking()];
         } else {
-            winResult = compareSameCategoryHands(winResult, blackHandsObj, whiteHandsObj);
+            winResult = compareSameCategoryHands(blackHandsObj, whiteHandsObj);
         }
         return winResult;
     }
 
-    private String compareSameCategoryHands(String winResult, Hands blackHandsObj, Hands whiteHandsObj) {
-        if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 0) { //同花顺
+    private String compareSameCategoryHands(Hands blackHandsObj, Hands whiteHandsObj) {
+        String winResult;
+        if (blackHandsObj.getCategory().getRanking() == 0) {
             winResult = compareStraightFlush(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 1) { //铁支
+        } else if (blackHandsObj.getCategory().getRanking() == 1) {
             winResult = compareFourOfAKind(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 2) { //葫芦
+        } else if (blackHandsObj.getCategory().getRanking() == 2) {
             winResult = compareFullHouse(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 3) { //同花
+        } else if (blackHandsObj.getCategory().getRanking() == 3) { //同花
             winResult = compareFlush(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 4) { //顺子
+        } else if (blackHandsObj.getCategory().getRanking() == 4) { //顺子
             winResult = compareStraight(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 5) { //三条
+        } else if (blackHandsObj.getCategory().getRanking() == 5) { //三条
             winResult = compareThreeOfAKind(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 6) { //两对
+        } else if (blackHandsObj.getCategory().getRanking() == 6) { //两对
             winResult = compareTwoPair(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().judgeHandsCategoryRanking() == 7) { //对子
+        } else if (blackHandsObj.getCategory().getRanking() == 7) { //对子
             winResult = compareOnePair(blackHandsObj, whiteHandsObj);
-        } else { //散牌
-            winResult = compareHighCard(winResult, blackHandsObj, whiteHandsObj);
+        } else {
+            winResult = compareHighCard(blackHandsObj, whiteHandsObj);
         }
         return winResult;
     }
 
-    private String compareHighCard(String winResult, Hands blackHandsObj, Hands whiteHandsObj) {
+    private String compareHighCard(Hands blackHandsObj, Hands whiteHandsObj) {
+        //散牌
+        String winResult = null;
+
         for (int i = 0; i < 5; i++) {
             if (blackHandsObj.getDescendingHandsNumbers()[i] < whiteHandsObj.getDescendingHandsNumbers()[i]) {
                 String sig = intNumber(whiteHandsObj.getDescendingHandsNumbers()[i]);
@@ -59,7 +64,7 @@ public class Poker {
     }
 
     private String compareOnePair(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult = "";
+        String winResult = null;
         if (blackHandsObj.getDescendingRepeatNumbers()[0] < whiteHandsObj.getDescendingRepeatNumbers()[0]) {
             String sig = intNumber(whiteHandsObj.getDescendingRepeatNumbers()[0]);
             winResult = "white wins - high card:" + sig;
@@ -138,7 +143,7 @@ public class Poker {
     }
 
     private String compareFlush(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult = "";
+        String winResult = null;
         for (int i = 0; i < 5; i++) {
             if (blackHandsObj.getDescendingHandsNumbers()[i] < whiteHandsObj.getDescendingHandsNumbers()[i]) {
                 String sig = intNumber(whiteHandsObj.getDescendingHandsNumbers()[i]);
@@ -156,7 +161,7 @@ public class Poker {
     }
 
     private String compareFullHouse(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult;
+        String winResult;//葫芦
         if (blackHandsObj.getDistinctDescendingHandsNumbers()[0] < whiteHandsObj.getDistinctDescendingHandsNumbers()[0]) {
             String sig = intNumber(whiteHandsObj.getDistinctDescendingHandsNumbers()[0]);
             winResult = "white wins - high card:" + sig;
@@ -168,7 +173,7 @@ public class Poker {
     }
 
     private String compareFourOfAKind(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult;
+        String winResult;//铁支
         if (blackHandsObj.getDistinctDescendingHandsNumbers()[0] < whiteHandsObj.getDistinctDescendingHandsNumbers()[0]) {
             String sig = intNumber(whiteHandsObj.getDistinctDescendingHandsNumbers()[0]);
             winResult = "white wins - high card:" + sig;
@@ -180,7 +185,7 @@ public class Poker {
     }
 
     private String compareStraightFlush(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult;
+        String winResult;//同花顺
         if (blackHandsObj.getDescendingHandsNumbers()[0] < whiteHandsObj.getDescendingHandsNumbers()[0]) {
             String sig = intNumber(whiteHandsObj.getDescendingHandsNumbers()[0]);
             winResult = "white wins - high card:" + sig;
