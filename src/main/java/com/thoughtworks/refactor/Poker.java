@@ -2,6 +2,8 @@ package com.thoughtworks.refactor;
 
 import java.util.*;
 
+import static com.thoughtworks.refactor.PokerUtils.*;
+
 public class Poker {
 
     public static final String[] CARD_TYPES = new String[]{"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
@@ -14,8 +16,8 @@ public class Poker {
         String winResult = "";
         String blackCategoty = judgeCategory(blackHands);
         String whiteCategoty = judgeCategory(whiteHands);
-        int[] blackNumber = PokerUtils.sortNumberDesc(blackHands);
-        int[] whiteNumber = PokerUtils.sortNumberDesc(whiteHands);
+        int[] blackNumber = sortNumberDesc(blackHands);
+        int[] whiteNumber = sortNumberDesc(whiteHands);
         int blackRanking = judgeRanking(blackCategoty);
         int whiteRanking = judgeRanking(whiteCategoty);
         int[] blackArraySort = arraySort(blackNumber);
@@ -256,29 +258,26 @@ public class Poker {
     //判断是什么牌
     private String judgeCategory(String hands) {
         String type = "";
-        int[] number = PokerUtils.sortNumberDesc(hands);
-        HashSet<Integer> distinctNumbers = PokerUtils.getDistinctNumbers(number);
-        HashSet<String> suits = PokerUtils.getSuits(hands);
-        if (distinctNumbers.size() == 5) {
-            if ((number[0] - number[4] == 4) && (suits.size() == 1) && (distinctNumbers.size() == 5)) { //五个相邻的数字且花色一样——同花顺
+        if (getDistinctNumbers(sortNumberDesc(hands)).size() == 5) {
+            if ((sortNumberDesc(hands)[0] - sortNumberDesc(hands)[4] == 4) && (getSuits(hands).size() == 1) && (getDistinctNumbers(sortNumberDesc(hands)).size() == 5)) { //五个相邻的数字且花色一样——同花顺
                 type = "StraightFlush";
-            } else if (number[0] - number[4] == 4 && (distinctNumbers.size() == 5)) { //五个相邻数字——顺子
+            } else if (sortNumberDesc(hands)[0] - sortNumberDesc(hands)[4] == 4 && (getDistinctNumbers(sortNumberDesc(hands)).size() == 5)) { //五个相邻数字——顺子
                 type = "Straight";
-            } else if (suits.size() == 1) { //同一花色——同花
+            } else if (getSuits(hands).size() == 1) { //同一花色——同花
                 type = "Flush";
             } else { //五个不相邻的数字——散牌
                 type = "HighCard";
             }
-        } else if (distinctNumbers.size() == 4) { //一对相同，其余三个数字不同——对子
+        } else if (getDistinctNumbers(sortNumberDesc(hands)).size() == 4) { //一对相同，其余三个数字不同——对子
             type = "OnePair";
-        } else if (distinctNumbers.size() == 3) {
-            if ((number[0] == number[1] && number[2] == number[3]) || (number[1] == number[2] && number[3] == number[4]) || (number[0] == number[1] && number[3] == number[4])) { //两对
+        } else if (getDistinctNumbers(sortNumberDesc(hands)).size() == 3) {
+            if ((sortNumberDesc(hands)[0] == sortNumberDesc(hands)[1] && sortNumberDesc(hands)[2] == sortNumberDesc(hands)[3]) || (sortNumberDesc(hands)[1] == sortNumberDesc(hands)[2] && sortNumberDesc(hands)[3] == sortNumberDesc(hands)[4]) || (sortNumberDesc(hands)[0] == sortNumberDesc(hands)[1] && sortNumberDesc(hands)[3] == sortNumberDesc(hands)[4])) { //两对
                 type = "TwoPair";
             } else { //三个数字相同，另外两个数字不同——三条
                 type = "ThreeOfAKind";
             }
         } else {
-            if (number[0] != number[1] || number[3] != number[4]) { //三个数字相同，另外两个数字相同——葫芦
+            if (sortNumberDesc(hands)[0] != sortNumberDesc(hands)[1] || sortNumberDesc(hands)[3] != sortNumberDesc(hands)[4]) { //三个数字相同，另外两个数字相同——葫芦
                 type = "FourOfAKind";
             } else { //四个数字相同——铁支
                 type = "FullHouse";
