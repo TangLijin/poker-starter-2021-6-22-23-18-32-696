@@ -14,11 +14,11 @@ public class HighCardComparator extends SameCategoryHandsComparator{
 
         for (int i = 0; i < 5; i++) {
             if (blackHandsObj.getDescendingHandsNumbers()[i] < whiteHandsObj.getDescendingHandsNumbers()[i]) {
-                String sig = intNumber(whiteHandsObj.getDescendingHandsNumbers()[i]);
+                String sig = SameCategoryHandsComparatorFactory.intNumber(whiteHandsObj.getDescendingHandsNumbers()[i]);
                 winResult = "white wins - high card:" + sig;
                 break;
             } else if (blackHandsObj.getDescendingHandsNumbers()[i] > whiteHandsObj.getDescendingHandsNumbers()[i]) {
-                String sig = intNumber(blackHandsObj.getDescendingHandsNumbers()[i]);
+                String sig = SameCategoryHandsComparatorFactory.intNumber(blackHandsObj.getDescendingHandsNumbers()[i]);
                 winResult = "black wins - high card:" + sig;
                 break;
             } else {

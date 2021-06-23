@@ -6,10 +6,10 @@ public class FullHouseComparator extends SameCategoryHandsComparator{
     public static String compareFullHouse(Hands blackHandsObj, Hands whiteHandsObj) {
         String winResult;//葫芦
         if (blackHandsObj.getDistinctDescendingHandsNumbers()[0] < whiteHandsObj.getDistinctDescendingHandsNumbers()[0]) {
-            String sig = intNumber(whiteHandsObj.getDistinctDescendingHandsNumbers()[0]);
+            String sig = SameCategoryHandsComparatorFactory.intNumber(whiteHandsObj.getDistinctDescendingHandsNumbers()[0]);
             winResult = "white wins - high card:" + sig;
         } else {
-            String sig = intNumber(blackHandsObj.getDistinctDescendingHandsNumbers()[0]);
+            String sig = SameCategoryHandsComparatorFactory.intNumber(blackHandsObj.getDistinctDescendingHandsNumbers()[0]);
             winResult = "black wins - high card:" + sig;
         }
         return winResult;

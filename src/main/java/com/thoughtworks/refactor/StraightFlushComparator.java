@@ -9,10 +9,10 @@ public class StraightFlushComparator extends SameCategoryHandsComparator{
     public static String compareStraightFlush(Hands blackHandsObj, Hands whiteHandsObj) {
         String winResult;//同花顺
         if (blackHandsObj.getDescendingHandsNumbers()[0] < whiteHandsObj.getDescendingHandsNumbers()[0]) {
-            String sig = intNumber(whiteHandsObj.getDescendingHandsNumbers()[0]);
+            String sig = SameCategoryHandsComparatorFactory.intNumber(whiteHandsObj.getDescendingHandsNumbers()[0]);
             winResult = "white wins - high card:" + sig;
         } else if (blackHandsObj.getDescendingHandsNumbers()[0] > whiteHandsObj.getDescendingHandsNumbers()[0]) {
-            String sig = intNumber(blackHandsObj.getDescendingHandsNumbers()[0]);
+            String sig = SameCategoryHandsComparatorFactory.intNumber(blackHandsObj.getDescendingHandsNumbers()[0]);
             winResult = "black wins - high card:" + sig;
         } else {
             winResult = "tie";
