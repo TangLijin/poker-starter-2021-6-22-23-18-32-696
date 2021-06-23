@@ -3,23 +3,38 @@ package com.thoughtworks.refactor;
 
 public class SameCategoryHandsComparator {
 
-    public static String compareStraightFlush(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult;//同花顺
-        if (blackHandsObj.getDescendingHandsNumbers()[0] < whiteHandsObj.getDescendingHandsNumbers()[0]) {
-            String sig = intNumber(whiteHandsObj.getDescendingHandsNumbers()[0]);
-            winResult = "white wins - high card:" + sig;
-        } else if (blackHandsObj.getDescendingHandsNumbers()[0] > whiteHandsObj.getDescendingHandsNumbers()[0]) {
-            String sig = intNumber(blackHandsObj.getDescendingHandsNumbers()[0]);
-            winResult = "black wins - high card:" + sig;
-        } else {
-            winResult = "tie";
-        }
-        return winResult;
-    }
-
     public static String intNumber(int i) {
         String[] strNumber = {"2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"};
         return strNumber[i - 2];
+    }
+
+    public static SameCategoryHandsComparator getInstance(int categoryRanking) {
+        if (categoryRanking == 0) {
+            return new StraightFlushComparator();
+        }
+        return new SameCategoryHandsComparator();
+    }
+
+    public static String compareSameCategoryHands(Hands blackHandsObj, Hands whiteHandsObj) {
+        String winResult;
+        if (blackHandsObj.getCategory().getRanking() == 1) {
+            winResult = SameCategoryHandsComparator.compareFourOfAKind(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 2) {
+            winResult = SameCategoryHandsComparator.compareFullHouse(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 3) { //同花
+            winResult = SameCategoryHandsComparator.compareFlush(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 4) { //顺子
+            winResult = SameCategoryHandsComparator.compareStraight(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 5) { //三条
+            winResult = SameCategoryHandsComparator.compareThreeOfAKind(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 6) { //两对
+            winResult = SameCategoryHandsComparator.compareTwoPair(blackHandsObj, whiteHandsObj);
+        } else if (blackHandsObj.getCategory().getRanking() == 7) { //对子
+            winResult = SameCategoryHandsComparator.compareOnePair(blackHandsObj, whiteHandsObj);
+        } else {
+            winResult = SameCategoryHandsComparator.compareHighCard(blackHandsObj, whiteHandsObj);
+        }
+        return winResult;
     }
 
     public static String compareThreeOfAKind(Hands blackHandsObj, Hands whiteHandsObj) {
@@ -163,27 +178,4 @@ public class SameCategoryHandsComparator {
         return winResult;
     }
 
-    public static String compareSameCategoryHands(Hands blackHandsObj, Hands whiteHandsObj) {
-        String winResult;
-        if (blackHandsObj.getCategory().getRanking() == 0) {
-            winResult = SameCategoryHandsComparator.compareStraightFlush(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 1) {
-            winResult = SameCategoryHandsComparator.compareFourOfAKind(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 2) {
-            winResult = SameCategoryHandsComparator.compareFullHouse(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 3) { //同花
-            winResult = SameCategoryHandsComparator.compareFlush(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 4) { //顺子
-            winResult = SameCategoryHandsComparator.compareStraight(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 5) { //三条
-            winResult = SameCategoryHandsComparator.compareThreeOfAKind(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 6) { //两对
-            winResult = SameCategoryHandsComparator.compareTwoPair(blackHandsObj, whiteHandsObj);
-        } else if (blackHandsObj.getCategory().getRanking() == 7) { //对子
-            winResult = SameCategoryHandsComparator.compareOnePair(blackHandsObj, whiteHandsObj);
-        } else {
-            winResult = SameCategoryHandsComparator.compareHighCard(blackHandsObj, whiteHandsObj);
-        }
-        return winResult;
-    }
 }
