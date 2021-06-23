@@ -8,17 +8,18 @@ public class Poker {
 
     public String compareResult(String blackHands, String whiteHands) {
         String winResult = "";
-        Hands balckHandsObj = new Hands(blackHands);
-        String blackHandsCategory = PokerUtil.judgeHandCategory(balckHandsObj);
-        int[] blackDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(balckHandsObj);
-        int blackHandsCategoryRanking = judgeHandsCategoryRanking(new Category(blackHandsCategory));
+        Hands blackHandsObj = new Hands(blackHands);
+        int[] blackDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(blackHandsObj);
+        Category blackCateGory = blackHandsObj.getCategory();
+        int blackHandsCategoryRanking = judgeHandsCategoryRanking(blackCateGory);
         int[] blackDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(blackDescendingHandsNumbers);
         int[] blackRepeatNumbers = getDescendingRepeatNumbers(blackDescendingHandsNumbers);
         int[] blackNoRepeatNumbers = getDescendingNoRepeatNumbers(blackDescendingHandsNumbers);
 
-        String whiteHandsCategory = PokerUtil.judgeHandCategory(new Hands(whiteHands));
-        int[] whiteDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(new Hands(whiteHands));
-        int whiteHandsCategoryRanking = judgeHandsCategoryRanking(new Category(whiteHandsCategory));
+        Hands whiteHandsObj = new Hands(whiteHands);
+        int[] whiteDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(whiteHandsObj);
+        Category whiteCategory = whiteHandsObj.getCategory();
+        int whiteHandsCategoryRanking = judgeHandsCategoryRanking(whiteCategory);
         int[] whiteDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(whiteDescendingHandsNumbers);
         int[] whiteRepeatNumbers = getDescendingRepeatNumbers(whiteDescendingHandsNumbers);
         int[] whiteNoRepeatNumbers = getDescendingNoRepeatNumbers(whiteDescendingHandsNumbers);
