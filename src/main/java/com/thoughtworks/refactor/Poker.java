@@ -7,6 +7,8 @@ public class Poker {
     public static final String[] CARD_TYPES = new String[]{"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
     public static final String WHITE_WINS_HIGH_CARD = "white wins - high card:";
     public static final String BLACK_WINS_HIGH_CARD = "black wins - high card:";
+    public static final String BLACK_WINS = "black wins - ";
+    public static final String WHITE_WINS = "white wins - ";
 
     public String compareResult(String blackCard, String whiteCard) {
         String winResult = "";
@@ -23,9 +25,9 @@ public class Poker {
         int[] blackNoRepeat = noOrRepeatNumber(blackNumber, 1);
         int[] whiteNoRepeat = noOrRepeatNumber(whiteNumber, 1);
         if (blackIndex < whiteIndex) {
-            winResult = "black wins - " + CARD_TYPES[blackIndex];
+            winResult = BLACK_WINS + CARD_TYPES[blackIndex];
         } else if (blackIndex > whiteIndex) {
-            winResult = "white wins - " + CARD_TYPES[whiteIndex];
+            winResult = WHITE_WINS + CARD_TYPES[whiteIndex];
         } else {
             if (blackIndex == 0) { //同花顺
                 if (blackNumber[0] < whiteNumber[0]) {
