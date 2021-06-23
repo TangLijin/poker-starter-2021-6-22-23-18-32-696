@@ -3,13 +3,15 @@ package com.thoughtworks.refactor;
 import java.util.*;
 
 public class Poker {
-    public String compairResult(String black, String white) {
+
+    public static final String[] CARD_TYPES = new String[]{"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
+
+    public String compairResult(String blackCard, String whiteCard) {
         String winResult = "";
-        String blackType = judgeType(black);
-        String whiteType = judgeType(white);
-        String[] type = {"StraightFlush", "FourOfAKind", "FullHouse", "Flush", "Straight", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard"};
-        int[] blackNumber = strNumber(black);
-        int[] whiteNumber = strNumber(white);
+        String blackType = judgeType(blackCard);
+        String whiteType = judgeType(whiteCard);
+        int[] blackNumber = strNumber(blackCard);
+        int[] whiteNumber = strNumber(whiteCard);
         int blackIndex = judgeIndex(blackType);
         int whiteIndex = judgeIndex(whiteType);
         int[] blackArraySort = arraySort(blackNumber);
@@ -19,9 +21,9 @@ public class Poker {
         int[] blackNoRepeat = noOrRepeatNumber(blackNumber, 1);
         int[] whiteNoRepeat = noOrRepeatNumber(whiteNumber, 1);
         if (blackIndex < whiteIndex) {
-            winResult = "black wins - " + type[blackIndex];
+            winResult = "black wins - " + CARD_TYPES[blackIndex];
         } else if (blackIndex > whiteIndex) {
-            winResult = "white wins - " + type[whiteIndex];
+            winResult = "white wins - " + CARD_TYPES[whiteIndex];
         } else {
             if (blackIndex == 0) { //同花顺
                 if (blackNumber[0] < whiteNumber[0]) {
