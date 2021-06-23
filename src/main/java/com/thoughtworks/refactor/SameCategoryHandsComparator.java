@@ -11,6 +11,20 @@ public class SameCategoryHandsComparator {
     public static SameCategoryHandsComparator getInstance(int categoryRanking) {
         if (categoryRanking == 0) {
             return new StraightFlushComparator();
+        } else if (categoryRanking == 1) {
+            return new FourOfAKindComparator();
+        } else if (categoryRanking == 2) {
+            return new FullHouseComparator();
+        } else if (categoryRanking == 3) {
+            return new FlushComparator();
+        } else if (categoryRanking == 4) {
+            return new StraightComparator();
+        } else if (categoryRanking == 5) {
+            return new ThreeOfAKindComparator();
+        } else if (categoryRanking == 6) {
+            return new TwoPairComparator();
+        } else if (categoryRanking == 7) {
+            return new OnePairComparator();
         }
         return new SameCategoryHandsComparator();
     }
