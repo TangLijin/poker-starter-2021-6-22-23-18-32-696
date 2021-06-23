@@ -12,10 +12,10 @@ public class Poker {
 
     public String compareResult(String blackHands, String whiteHands) {
         String winResult = "";
-        String blackCategoty = judgeCategoty(blackHands);
-        String whiteCategoty = judgeCategoty(whiteHands);
-        int[] blackNumber = sortNumberDesc(blackHands);
-        int[] whiteNumber = sortNumberDesc(whiteHands);
+        String blackCategoty = judgeCategory(blackHands);
+        String whiteCategoty = judgeCategory(whiteHands);
+        int[] blackNumber = PokerUtils.sortNumberDesc(blackHands);
+        int[] whiteNumber = PokerUtils.sortNumberDesc(whiteHands);
         int blackRanking = judgeRanking(blackCategoty);
         int whiteRanking = judgeRanking(whiteCategoty);
         int[] blackArraySort = arraySort(blackNumber);
@@ -254,23 +254,11 @@ public class Poker {
     }
 
     //判断是什么牌
-    private String judgeCategoty(String hands) {
+    private String judgeCategory(String hands) {
         String type = "";
-        String[] strArray = hands.split("");
-        int[] number = sortNumberDesc(hands);
-        int i;
-        String[] color = new String[5];
-        for (i = 0; i < 5; i++) {
-            color[i] = strArray[i * 3 + 1];
-        }
-        HashSet<Integer> distinctNumbers = new HashSet<Integer>();
-        for (i = 0; i < 5; i++) {
-            distinctNumbers.add(number[i]);
-        }
-        HashSet<String> suits = new HashSet<String>();
-        for (i = 0; i < 5; i++) {
-            suits.add(color[i]);
-        }
+        int[] number = PokerUtils.sortNumberDesc(hands);
+        HashSet<Integer> distinctNumbers = PokerUtils.getDistinctNumbers(number);
+        HashSet<String> suits = PokerUtils.getSuits(hands);
         if (distinctNumbers.size() == 5) {
             if ((number[0] - number[4] == 4) && (suits.size() == 1) && (distinctNumbers.size() == 5)) { //五个相邻的数字且花色一样——同花顺
                 type = "StraightFlush";
@@ -299,40 +287,4 @@ public class Poker {
         return type;
     }
 
-    //数字转化并将其从大到小排序
-    private int[] sortNumberDesc(String str) {
-        int[] number = new int[5];
-        String[] strArray = str.split("");
-        int i;
-        for (i = 0; i < 5; i++) {
-            String c = strArray[i * 3];
-            switch (c) {
-                case "T":
-                    number[i] = 10;
-                    break;
-                case "J":
-                    number[i] = 11;
-                    break;
-                case "Q":
-                    number[i] = 12;
-                    break;
-                case "K":
-                    number[i] = 13;
-                    break;
-                case "A":
-                    number[i] = 14;
-                    break;
-                default:
-                    number[i] = Integer.valueOf(c);
-                    break;
-            }
-        }
-
-        Arrays.sort(number);
-        int[] renumber = new int[number.length];
-        for (i = 0; i < number.length; i++) {
-            renumber[i] = number[number.length - i - 1];
-        }
-        return renumber;
-    }
 }
