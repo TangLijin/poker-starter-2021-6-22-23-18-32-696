@@ -8,15 +8,16 @@ public class Poker {
 
     public String compareResult(String blackHands, String whiteHands) {
         String winResult = "";
-        String blackHandsCategory = PokerUtil.judgeHandCategory(new Hands(blackHands));
-        int[] blackDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(blackHands);
+        Hands balckHandsObj = new Hands(blackHands);
+        String blackHandsCategory = PokerUtil.judgeHandCategory(balckHandsObj);
+        int[] blackDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(balckHandsObj);
         int blackHandsCategoryRanking = judgeHandsCategoryRanking(new Category(blackHandsCategory));
         int[] blackDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(blackDescendingHandsNumbers);
         int[] blackRepeatNumbers = getDescendingRepeatNumbers(blackDescendingHandsNumbers);
         int[] blackNoRepeatNumbers = getDescendingNoRepeatNumbers(blackDescendingHandsNumbers);
 
         String whiteHandsCategory = PokerUtil.judgeHandCategory(new Hands(whiteHands));
-        int[] whiteDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(whiteHands);
+        int[] whiteDescendingHandsNumbers = PokerUtil.getDescendingHandsNumbers(new Hands(whiteHands));
         int whiteHandsCategoryRanking = judgeHandsCategoryRanking(new Category(whiteHandsCategory));
         int[] whiteDistinctDescendingHandsNumbers = getDistinctDescendingHandsNumbers(whiteDescendingHandsNumbers);
         int[] whiteRepeatNumbers = getDescendingRepeatNumbers(whiteDescendingHandsNumbers);
